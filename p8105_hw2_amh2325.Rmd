@@ -15,3 +15,43 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(readxl)
 ```
+## Problem 1
+## Import trash_wheel data sheet 1
+```{r}
+trash_wheels_data =
+  read_excel(path = "./data/trash_wheel.xlsx", sheet = 1) %>%
+  janitor::clean_names() %>%
+  drop_na(dumpster) %>%
+  select(-15, -16, -17) %>%
+  mutate(sports_balls = as.integer(sports_balls))
+trash_wheels_data
+```
+## Import trash_wheel_data_2018
+```{r}
+precipitation_2018 = 
+  read_excel(path = "./data/trash_wheel.xlsx", sheet = 6, range = "A2:B14") %>%
+  janitor::clean_names() %>%
+  mutate(year = 2018)
+precipitation_2018
+```
+## Import trash_wheel_data_2019
+```{r}
+precipitation_2017 = 
+  read_excel(path = "./data/trash_wheel.xlsx", sheet = 5, range = "A2:B14") %>%
+  janitor::clean_names() %>%
+  mutate(year = 2017)
+precipitation_2017
+```
+## Merging datasets
+```{r}
+precipitation_join = 
+  full_join(precipitation_2018, precipitation_2017) %>%
+  mutate(month = as.numeric(month), month = month.abb[month])
+precipitation_join
+```
+Problem 1: 
+
+## Problem 2 
+```{r}
+
+```
