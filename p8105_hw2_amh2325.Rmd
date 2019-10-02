@@ -1,0 +1,17 @@
+---
+title: "p8105_hw2_amh2325"
+author: "Amanda Howarth"
+date: "10/2/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+library(tidyverse)
+library(readxl)
+```
