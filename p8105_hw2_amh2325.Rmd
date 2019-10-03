@@ -63,7 +63,6 @@ pols_month_data = read_csv("./data/pols-month.csv") %>%
   select(-prez_dem, -prez_gop, -day)
 pols_month_data
 ```
-
 ## Import standard_poor_stock data 
 ```{r}
 standard_poor_stock_data = read_csv("./data/snp.csv") %>%
@@ -95,6 +94,13 @@ snp_pols_unemp_data =
     left_join(snp_pols_data, unemployment_data, by = c("year", "month"))
 snp_pols_unemp_data
 ```
+## Problem 2
+pols_month_data 
+standard_poor_stock_data
+unemployment_data 
+snp_pols_data
+snp_pols_unemp_data 
+
 ## Problem 3 
 ## Import baby names data 
 ```{r}
@@ -115,7 +121,7 @@ filter(childs_first_name == "olivia") %>%
 ## Producing a similar table showing the most popular name among male children over time.
 ```{r}
 baby_names_data %>%
-filter(gender == "male") %>%
+filter(gender == "male", rank == 1) %>%
   select(-count) %>%
   pivot_wider(names_from = year_of_birth,
               values_from = rank)
@@ -124,5 +130,4 @@ filter(gender == "male") %>%
 ```{r}
 baby_names_plot = filter(baby_names_data, ethnicity == "white non hispanic", year_of_birth == "2016", gender == "male")
 ggplot(baby_names_plot, aes(x = rank, y = count)) + geom_point() 
-
 ``` 
