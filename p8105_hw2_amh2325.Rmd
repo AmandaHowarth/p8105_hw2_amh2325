@@ -50,6 +50,10 @@ precipitation_join =
 precipitation_join
 ```
 Problem 1: 
+Write a paragraph about these data; you are encouraged to use inline R. Be sure to note the number of observations in both resulting datasets, and give examples of key variables. For available data, what was the total precipitation in 2018? What was the median number of sports balls in a dumpster in 2017?
+
+There are `r nrow(trash_wheels_data)` observations in `trash_wheel_data`. There are `r nrow(precipitation_join)` observations in `precipitation_join`. For available data, the total precipiation in 2018 was `r sum(pull(filter(precipitation_join, year == 2018), total))`.In 2017, the median number of sports balls found in a dumpster was `r median(pull(filter(trash_wheels_data, year == 2017), sports_balls))`.
+
 
 ## Problem 2 
 ## Import pols_month data 
