@@ -16,7 +16,7 @@ library(tidyverse)
 library(readxl)
 ```
 ## Problem 1
-## Import trash_wheel data sheet 1
+## Import trash_wheels data sheet 1
 ```{r}
 trash_wheels_data =
   read_excel(path = "./data/trash_wheel.xlsx", sheet = 1) %>%
@@ -26,32 +26,72 @@ trash_wheels_data =
   mutate(sports_balls = as.integer(sports_balls))
 trash_wheels_data
 ```
-## Import trash_wheel_data_2018
+## Import precipitation_2018 data
 ```{r}
-precipitation_2018 = 
+precipitation_2018_data = 
   read_excel(path = "./data/trash_wheel.xlsx", sheet = 6, range = "A2:B14") %>%
   janitor::clean_names() %>%
   mutate(year = 2018)
-precipitation_2018
+precipitation_2018_data
 ```
-## Import trash_wheel_data_2019
+## Import precipitation_2017 data
 ```{r}
-precipitation_2017 = 
+precipitation_2017_data = 
   read_excel(path = "./data/trash_wheel.xlsx", sheet = 5, range = "A2:B14") %>%
   janitor::clean_names() %>%
   mutate(year = 2017)
-precipitation_2017
+precipitation_2017_data
 ```
-## Merging datasets
+## Merging datasets to form precipiation_join data 
 ```{r}
 precipitation_join = 
-  full_join(precipitation_2018, precipitation_2017) %>%
-  mutate(month = as.numeric(month), month = month.abb[month])
+  full_join(precipitation_2018_data, precipitation_2017_data) %>%
+  mutate(month = as.numeric(month), month = month.name[month])
 precipitation_join
 ```
 Problem 1: 
 
 ## Problem 2 
+## Import pols_month data 
 ```{r}
+pols_month_data = read_csv("./data/pols-month.csv") %>%
+  janitor::clean_names() %>%
+  separate(mon, into = c("year", "month", "day")) %>%
+  mutate(month = as.numeric(month), month = month.abb[month]) %>%
+  mutate(year = as.numeric(year))%>%
+  mutate(president = ifelse(prez_dem, "dem", "gop")) %>%
+  select(-prez_dem, -prez_gop, -day)
+pols_month_data
+```
 
+## Import standard_poor_stock data 
+```{r}
+standard_poor_stock_data = read_csv("./data/snp.csv") %>%
+  janitor::clean_names() %>%
+  separate(date, into = c("day", "month", "year")) %>%
+  select(year, month, everything(), -day) %>%
+  mutate(year = as.numeric(year))%>%
+  mutate(month = as.numeric(month), month = month.abb[month])
+standard_poor_stock_data
+```
+
+## Import unemployment data 
+```{r}
+unemployment_data = read_csv("./data/unemployment.csv") %>%
+  pivot_longer((Jan:Dec), names_to = "month", values_to ="percent")%>%
+  janitor::clean_names()
+unemployment_data
+```
+
+## Merge standard_poor_stock_data and pols_month_data to form snp_pols_data 
+```{r}
+snp_pols_data = 
+  left_join(pols_month_data, standard_poor_stock_data, by = c("year", "month"))
+snp_pols_data
+```
+## Merge unemployment_data and snp_pols_data into snp_pols_unemp_data 
+```{r}
+snp_pols_unemp_data = 
+    left_join(snp_pols_data, unemployment_data, by = c("year", "month"))
+snp_pols_unemp_data
 ```
