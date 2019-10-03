@@ -104,23 +104,25 @@ baby_names_data = read_csv("./data/Popular_Baby_Names.csv") %>%
   mutate(ethnicity = recode(ethnicity, "ASIAN AND PACI" = "ASIAN AND PACIFIC ISLANDER", "BLACK NON HISP" = "BLACK NON HISPANIC", "WHITE NON HISP" = "WHITE NON HISPANIC")) %>%
   mutate(ethnicity = str_to_lower(ethnicity), gender = str_to_lower(gender), childs_first_name = str_to_lower(childs_first_name))
 ```
-
-```
 ## Producing a table showing the rank in popularity of the name “Olivia” as a female baby name over time; this should have rows for ethnicities and columns for year. 
 ```{r}
 baby_names_data %>%
 filter(childs_first_name == "olivia") %>%
+  select(-count) %>%
   pivot_wider(names_from = year_of_birth,
-              values_from = rank) %>%
-  select(-count)
+              values_from = rank)
 ```
 ## Producing a similar table showing the most popular name among male children over time.
 ```{r}
 baby_names_data %>%
 filter(gender == "male") %>%
-  pivot_wider(names_from = "year_of_birth",
-              values_from = "count")
+  select(-count) %>%
+  pivot_wider(names_from = year_of_birth,
+              values_from = rank)
 ```
-## For white non-hispanic children born in 2016, produce a scatter plot showing the number of children with a name (y axis) against the rank in popularity of that name (x axis).
-
+## For male, white non-hispanic children born in 2016, produce a scatter plot showing the number of children with a name (y axis) against the rank in popularity of that name (x axis).
 ```{r}
+baby_names_plot = filter(baby_names_data, ethnicity == "white non hispanic", year_of_birth == "2016", gender == "male")
+ggplot(baby_names_plot, aes(x = rank, y = count)) + geom_point() 
+
+``` 
