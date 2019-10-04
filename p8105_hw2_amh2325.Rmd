@@ -49,10 +49,10 @@ precipitation_join =
   mutate(month = as.numeric(month), month = month.name[month])
 precipitation_join
 ```
-Problem 1: 
+## Dataset summaries 
 Write a paragraph about these data; you are encouraged to use inline R. Be sure to note the number of observations in both resulting datasets, and give examples of key variables. For available data, what was the total precipitation in 2018? What was the median number of sports balls in a dumpster in 2017?
 
-There are `r nrow(trash_wheels_data)` observations in `trash_wheel_data`. There are `r nrow(precipitation_join)` observations in `precipitation_join`. For available data, the total precipiation in 2018 was `r sum(pull(filter(precipitation_join, year == 2018), total))`.In 2017, the median number of sports balls found in a dumpster was `r median(pull(filter(trash_wheels_data, year == 2017), sports_balls))`.
+The `trash_wheels_data` includes information on the dumpter number, date of collection, amount of total litter and litter type. There are `r nrow(trash_wheels_data)` observations and `r ncol(trash_wheels_data)` variables in `trash_wheel_data`. There are `r nrow(precipitation_join)` observations and `r ncol(precipitation_join)` in `precipitation_join`. For available data, the total precipiation in 2018 was `r sum(pull(filter(precipitation_join, year == 2018), total))`.In 2017, the median number of sports balls found in a dumpster was `r median(pull(filter(trash_wheels_data, year == 2017), sports_balls))`.
 
 ## Problem 2 
 ## Import pols_month data 
@@ -98,36 +98,17 @@ snp_pols_unemp_data =
     left_join(snp_pols_data, unemployment_data, by = c("year", "month"))
 snp_pols_unemp_data
 ```
-## Problem 2
+## Dataset summaries 
 
-`pols_month_data` has `r nrow(pols_month_data)` observations with `r ncol(pols_month_data)` variables. The dataset provides us with information regarding the number of national politicians who are democratic or republican at any given time ranging from `r min(pull(pols_month_data, year))` to
-`r max(pull(pols_month_data, year))`. Key variables include president, which tells us whether the president was democratic or replican in a given year and month. Other key variables include gov_gop, sen_gop, rep_gop, gov_dem, sen_dem, and rep_dem. 
+`pols_month_data` has `r nrow(pols_month_data)` observations with `r ncol(pols_month_data)` variables. The dataset provides us with information regarding the number of national politicians who are democratic or republican at any given month ranging from `r min(pull(pols_month_data, year))` to `r max(pull(pols_month_data, year))`. Key variables include president, which tells us whether the president serving was democratic or republican in a given year and month. Other key variables include gov_gop, sen_gop, rep_gop, gov_dem, sen_dem, and rep_dem. 
 
-`standard_poor_stock_data` has `r nrow(standard_poor_stock_data)` observations with `r ncol(standard_poor_stock_data)` variables. The dataset provides us with information related to Standard & Poor’s stock market index (S&P), ranging from `r min(pull(standard_poor_stock_data, year))` to `r min(pull(standard_poor_stock_data, year))`. 
+`standard_poor_stock_data` has `r nrow(standard_poor_stock_data)` observations with `r ncol(standard_poor_stock_data)` variables. The dataset provides us with information related to Standard & Poor’s stock market index (S&P), ranging from `r min(pull(standard_poor_stock_data, year))` to `r max(pull(standard_poor_stock_data, year))`. A key variable is "close," which is the closing values of the S&P stock index during the associated month and year.
 
-unemployment_data 
-snp_pols_data
-snp_pols_unemp_data 
+`unemployment_data` has `r nrow(unemployment_data)` observations with `r ncol(unemployment_data)` variables. The dataset provides us with the percentage of unemployment in the United States at a specific month and year, ranging from `r min(pull(unemployment_data, year))` to `r max(pull(unemployment_data, year))`. A key variable is percent_unemployed. 
 
-Write a short paragraph about these datasets. Explain briefly what each dataset contained, and describe the resulting dataset (e.g. give the dimension, range of years, and names of key variables).
+`snp_pols_data` has `r nrow(snp_pols_data)` observations with `r ncol(snp_pols_data)` variables. The dataset joined `pols_month_data` and `standard_poor_stock_data`, providing us with information regarding the number of national politicians who are democratic or republican in a specific month and year as well as the closing values of the S&P stock index on the associated date. This dataset ranged in year from `r min(pull(snp_pols_data, year))` to `r max(pull(snp_pols_data, year))`. Key variables are: sen_gop, rep_gop, sen_dem, rep_dem, president, and close. 
 
-Pol
-`r nrow(pols_month_data)`
-`r ncol(pols_month_data)`
-`r nrow(standard_poor_stock_data)`
-`r ncol(standard_poor_stock_data)`
-`r nrow(unemployment_data)`
-`r ncol(unemployment_data)`
-`r nrow(snp_pols_data)`
-`r ncol(snp_pols_data)`
-`r nrow(snp_pols_unemp_data)`
-`r ncol(snp_pols_unemp_data)`
-
-`r min(pull(pols_month_data, year))`
-`r max(pull(pols_month_data, year))`
-
-
-
+`snp_pols_unemp_data` has `r nrow(snp_pols_unemp_data)` observations with `r ncol(snp_pols_unemp_data)` variables. The dataset joined `snp_pols_data` and `unemployment_data`, providing us with information regarding the number of national politicians who are democratic or republican in a specific month and year as well as the closing values of the S&P stock index and percentage of unemployment in the US on the associated date. This dataset ranged in year from `r min(pull(snp_pols_unemp_data, year))` to `r max(pull(snp_pols_unemp_data, year))`. Key variables are: sen_gop, rep_gop, sen_dem, rep_dem, president, close, and percent_unemployed.
 
 ## Problem 3 
 ## Import baby names data 
@@ -138,7 +119,7 @@ baby_names_data = read_csv("./data/Popular_Baby_Names.csv") %>%
   mutate(ethnicity = recode(ethnicity, "ASIAN AND PACI" = "ASIAN AND PACIFIC ISLANDER", "BLACK NON HISP" = "BLACK NON HISPANIC", "WHITE NON HISP" = "WHITE NON HISPANIC")) %>%
   mutate(ethnicity = str_to_lower(ethnicity), gender = str_to_lower(gender), childs_first_name = str_to_lower(childs_first_name))
 ```
-## Producing a table showing the rank in popularity of the name “Olivia” as a female baby name over time; this should have rows for ethnicities and columns for year. 
+## Table showing the rank in popularity of the name “Olivia” as a female baby name over time.
 ```{r}
 baby_names_data %>%
 filter(childs_first_name == "olivia") %>%
@@ -146,7 +127,7 @@ filter(childs_first_name == "olivia") %>%
   pivot_wider(names_from = year_of_birth,
               values_from = rank)
 ```
-## Producing a similar table showing the most popular name among male children over time.
+## Table showing the most popular name among male children over time.
 ```{r}
 baby_names_data %>%
 filter(gender == "male", rank == 1) %>%
